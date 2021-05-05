@@ -16,11 +16,17 @@
     <properties>
         <java.version>11</java.version>
         <springdoc.version>1.5.6</springdoc.version>
+        <rocketmq-starter.version>2.2.0</rocketmq-starter.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>${rocketmq-starter.version}</version>
         </dependency>
 
         <dependency>

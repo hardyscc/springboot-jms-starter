@@ -1,0 +1,11 @@
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: my-producer-group-1
+    sendMessageTimeout: 300000
+
+demo:
+  rocketmq:
+    topic: string-topic
+    consumer:
+      group: my-consumer-group-1
