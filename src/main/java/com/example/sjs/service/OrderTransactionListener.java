@@ -26,29 +26,25 @@ public class OrderTransactionListener implements RocketMQLocalTransactionListene
     @Override
     public RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object arg) {
         log.info("OrderTransactionListener executeLocalTransaction....");
-        RocketMQLocalTransactionState state;
         try {
             String transactionId = (String) msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID);
             String orderJsonString = new String((byte[]) msg.getPayload());
             Order order = new ObjectMapper().readValue(orderJsonString, Order.class);
             this.orderService.createOrder(order, transactionId);
-            state = RocketMQLocalTransactionState.COMMIT;
+            return RocketMQLocalTransactionState.COMMIT;
         } catch (Exception e) {
-            state = RocketMQLocalTransactionState.ROLLBACK;
+            return RocketMQLocalTransactionState.ROLLBACK;
         }
-        return state;
     }
 
     @Override
     public RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
         log.info("OrderTransactionListener checkLocalTransaction....");
-        RocketMQLocalTransactionState state;
         String transactionId = (String) msg.getHeaders().get(RocketMQHeaders.TRANSACTION_ID);
         if (transactionId != null && this.transactionLogRepository.existsById(transactionId)) {
-            state = RocketMQLocalTransactionState.COMMIT;
+            return RocketMQLocalTransactionState.COMMIT;
         } else {
-            state = RocketMQLocalTransactionState.ROLLBACK;
+            return RocketMQLocalTransactionState.ROLLBACK;
         }
-        return state;
     }
 }
